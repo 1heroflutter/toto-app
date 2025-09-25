@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TaskPriorityDialog extends StatefulWidget {
-  const TaskPriorityDialog({super.key});
+  final TextEditingController priority ;
+  const TaskPriorityDialog({super.key, required this.priority});
 
   @override
   State<TaskPriorityDialog> createState() => _TaskPriorityDialogState();
@@ -9,9 +10,10 @@ class TaskPriorityDialog extends StatefulWidget {
 
 class _TaskPriorityDialogState extends State<TaskPriorityDialog> {
   int selected = 1;
-
   @override
   Widget build(BuildContext context) {
+    late  TextEditingController priority = widget.priority;
+
     final theme = Theme.of(context);
 
     return Dialog(
@@ -46,7 +48,10 @@ class _TaskPriorityDialogState extends State<TaskPriorityDialog> {
                     final isSelected = selected == value;
 
                     return GestureDetector(
-                      onTap: () => setState(() => selected = value),
+                      onTap: () => setState(() {
+                        selected = value;
+                        priority.text = value.toString();
+                      }),
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),

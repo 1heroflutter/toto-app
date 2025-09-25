@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mytodoapp/common/widgets/bottomSheet/basic_bottom_sheet.dart';
 import 'package:mytodoapp/common/widgets/dialog/add.dart';
 import 'package:mytodoapp/presentation/edit/pages/edit_page.dart';
 import '../../calendar/pages/calendar_page.dart';
@@ -8,17 +9,28 @@ import '../../profile/pages/profile_page.dart';
 
 class IndexPage extends StatefulWidget {
   const IndexPage({super.key});
+
   @override
   State<IndexPage> createState() => _IndexPageState();
 }
+
 class _IndexPageState extends State<IndexPage> {
   int _currentIndex = 0;
-  final List<Widget> _pages = const [
-    HomePage(),
-    CalendarPage(),
-    FocusPage(),
-    ProfilePage(),
-  ];
+  Widget _getPage(int index) {
+    switch (index) {
+      case 0:
+        return const HomePage();
+      case 1:
+        return const CalendarPage();
+      case 2:
+        return const FocusPage();
+      case 3:
+        return const ProfilePage();
+      default:
+        return const HomePage();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -30,16 +42,22 @@ class _IndexPageState extends State<IndexPage> {
           borderRadius: BorderRadiusGeometry.circular(100),
         ),
         onPressed: () {
-          showDialog(
+          showModalBottomSheet(
             context: context,
+            isScrollControlled: true, // cho phép sheet mở full height
+            backgroundColor: theme.colorScheme.background,
             builder: (context) {
-              return AddDialog(
-                title: TextEditingController(),
-                description: TextEditingController(),
+              return Padding(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                child: const BasicBottomSheet(),
               );
             },
           );
+
         },
+
         child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -109,7 +127,7 @@ class _IndexPageState extends State<IndexPage> {
           ],
         ),
       ),
-      body: IndexedStack(index: _currentIndex, children: _pages),
+      body: _getPage(_currentIndex),
     );
   }
 }

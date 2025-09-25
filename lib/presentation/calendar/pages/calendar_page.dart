@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_calendar/flutter_advanced_calendar.dart';
+import 'package:mytodoapp/presentation/calendar/widgets/get_task.dart';
 
 import '../../../common/helper/app_navigator.dart';
 import '../../../common/widgets/appbar/basic_appbar.dart';
-import '../../../common/widgets/task_item.dart';
+import '../../../common/widgets/task.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarPage extends StatefulWidget {
@@ -14,20 +15,25 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  DateTime focusedDay = DateTime.now();
-  DateTime? selectedDay;
+  AdvancedCalendarController selectedDay = AdvancedCalendarController(
+    DateTime.now(),
+  );
+  bool isDone = false;
 
-  // giả lập task theo ngày
-  final Map<DateTime, List<String>> tasks = {
-    DateTime.utc(2025, 8, 24): [
-      "Do Math Homework",
-      "Business meeting with CEO",
-    ],
-    DateTime.utc(2025, 8, 25): ["Tack out dogs"],
-  };
+  @override
+  void initState() {
+    super.initState();
+    selectedDay.addListener(_onDateChanged);
+  }
 
-  List<String> _getTasksForDay(DateTime day) {
-    return tasks[DateTime.utc(day.year, day.month, day.day)] ?? [];
+  void _onDateChanged() {
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    selectedDay.removeListener(_onDateChanged);
+    super.dispose();
   }
 
   @override
@@ -35,43 +41,84 @@ class _CalendarPageState extends State<CalendarPage> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Calendar")),
+      appBar: PreferredSize(
+        preferredSize: Size(
+          double.infinity,
+          MediaQuery.of(context).size.height * 0.05,
+        ),
+        child: BasicAppBar(
+          icon: null,
+          title: Text(
+            "Calendar",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: theme.colorScheme.onPrimary,
+            ),
+          ),
+          onLeadingTap: null,
+          suffer: null,
+        ),
+      ),
       body: Column(
         children: [
-          // --- Calendar ---
           AdvancedCalendar(
-            controller: AdvancedCalendarController(DateTime.now()),
+            controller: selectedDay,
             startWeekDay: 1,
-            events: [
-              DateTime(2025, 8, 24),
-              DateTime(2025, 8, 25),
-            ], // ngày nào có task thì add vào đây
+            events: [DateTime(2025, 8, 24), DateTime(2025, 8, 25)],
           ),
 
           const SizedBox(height: 12),
-
-          // --- Today / Completed buttons ---
           Row(
             children: [
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () {},
-                  child: const Text("Today"),
+                  onPressed: () {
+                    setState(() {
+                      isDone = false;
+                    });
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(
+                      !isDone
+                          ? theme.primaryColor
+                          : theme.colorScheme.background,
+                    ),
+                  ),
+                  child: Text(
+                    "To Do",
+                    style: TextStyle(
+                      color: !isDone ? Colors.white : theme.primaryColor,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(width: 8),
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () {},
-                  child: const Text("Completed"),
+                  onPressed: () {
+                    setState(() {
+                      isDone = true;
+                    });
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(
+                      isDone
+                          ? theme.primaryColor
+                          : theme.colorScheme.background,
+                    ),
+                  ),
+                  child: Text(
+                    "Completed",
+                    style: TextStyle(
+                      color: isDone ? Colors.white : theme.primaryColor,
+                    ),
+                  ),
                 ),
               ),
             ],
           ),
-
           const SizedBox(height: 16),
-
-
+          GetTask(date: selectedDay.value, isDone: isDone),
         ],
       ),
     );

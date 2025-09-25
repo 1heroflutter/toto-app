@@ -19,9 +19,7 @@ class BasicElevatedBtn extends StatelessWidget {
       height:  MediaQuery.of(context).size.height * 0.06,
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {
-          onPress;
-        },
+        onPressed:onPress,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,

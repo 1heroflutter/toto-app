@@ -11,6 +11,7 @@ class AppTheme {
     ),
     scaffoldBackgroundColor: AppColors.lightBackground,
     colorScheme: ColorScheme.light(
+      primary: AppColors.primary,
       background: Colors.white,
 
       onPrimary: Colors.black,
@@ -75,12 +76,14 @@ class AppTheme {
     ),
     scaffoldBackgroundColor: Colors.black,
     colorScheme: ColorScheme.dark(
+        primary: AppColors.primary,
       background: Colors.black,
       onPrimary: Colors.white,
       onSecondary: Colors.grey,
       brightness: Brightness.dark,
       onSecondaryContainer: Colors.black,
-      secondaryContainer: Colors.white38,
+      secondaryContainer: Colors.black38,
+      primaryContainer: Colors.white38
     ),
 
     primaryColor: AppColors.primary,

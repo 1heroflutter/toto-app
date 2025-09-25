@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mytodoapp/core/config/assets/app_images.dart';
 import 'package:mytodoapp/presentation/auth/pages/onboarding.dart';
+import 'package:mytodoapp/presentation/index/pages/index_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../common/helper/app_navigator.dart';
@@ -23,8 +24,10 @@ class SplashPage extends StatelessWidget {
       body: BlocListener<SplashCubit, SplashState>(
         listener: (context, state) async {
           if (state is Authenticated) {
-            AppNavigator.pushAndRemove(context, OnboardingPage());
+            AppNavigator.pushAndRemove(context, IndexPage());
+
           } else {
+            AppNavigator.pushAndRemove(context, OnboardingPage());
 
           }
         },

@@ -45,6 +45,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
         children: [
           Expanded(
             child: PageView.builder(
+              physics: null,
               controller: pageController,
               onPageChanged:
                   (value) => setState(() {

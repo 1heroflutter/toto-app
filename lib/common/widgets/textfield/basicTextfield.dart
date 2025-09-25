@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 class BasicTextField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
-
+  final String? errorText;
   const BasicTextField({
     super.key,
     required this.controller,
     required this.label,
+    this.errorText,
   });
 
   @override
@@ -32,6 +33,7 @@ class BasicTextField extends StatelessWidget {
         border: OutlineInputBorder(
           borderSide: BorderSide(width: 1, color: theme.colorScheme.onPrimary),
         ),
+        errorText: errorText
       ),
     );
   }

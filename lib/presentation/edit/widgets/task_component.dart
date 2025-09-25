@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mytodoapp/domain/task/entities/task_entity.dart';
 
 class TaskComponent extends StatelessWidget {
   final Widget icon;
   final String title;
   final Widget? content;
+  final CategoryEntity? category;
   final VoidCallback? onTap;
 
   const TaskComponent({
@@ -12,6 +14,7 @@ class TaskComponent extends StatelessWidget {
     required this.icon,
     this.content,
     this.onTap,
+    this.category,
   });
 
   @override
@@ -32,7 +35,7 @@ class TaskComponent extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.secondaryContainer,
+                  color: category!=null?Color(category!.color):theme.colorScheme.primaryContainer,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: content,

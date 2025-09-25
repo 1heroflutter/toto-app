@@ -46,6 +46,11 @@ dependencies:
   reactive_button:
   flutter_advanced_calendar:
   table_calendar:
+  firebase_auth:
+  google_sign_in_android:
+  firebase_core:
+  cloud_firestore:
+  flutter_slidable:
 dev_dependencies:
   flutter_test:
     sdk: flutter

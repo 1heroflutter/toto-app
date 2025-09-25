@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mytodoapp/domain/task/entities/task_entity.dart';
 
 class DeleteDialog extends StatelessWidget {
-  const DeleteDialog({super.key});
+  final VoidCallback onTap;
+  final TaskEntity task;
+  const DeleteDialog({super.key, required this.onTap, required this.task});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +39,7 @@ class DeleteDialog extends StatelessWidget {
                   children: [
 
                     Text('Are You sure you want to delete this task?',textAlign: TextAlign.center,style: TextStyle(color: theme.colorScheme.onPrimary,fontSize: 20),),
-                    Text('Task title: Title',style: TextStyle(color: theme.colorScheme.onPrimary,fontSize: 20),),
+                    Text('Task title: ${task.title}',style: TextStyle(color: theme.colorScheme.onPrimary,fontSize: 20),),
                   ],
                 )
               ),
@@ -50,7 +53,9 @@ class DeleteDialog extends StatelessWidget {
                         "Cancel",
                         style: TextStyle(color: theme.primaryColor),
                       ),
-                      onPressed: () => Navigator.pop(context),
+                      onPressed:() {
+                        Navigator.pop(context);
+                      },
                     ),
                   ),
                   Expanded(
@@ -60,12 +65,11 @@ class DeleteDialog extends StatelessWidget {
                           theme.primaryColor,
                         ),
                       ),
+                      onPressed:onTap,
                       child: Text(
                         "Delete",
                         style: TextStyle(color: theme.colorScheme.onPrimary),
                       ),
-                      onPressed: () async {
-                      },
                     ),
                   ),
                 ],

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../../../service_locator.dart';
 import '../textfield/dialog_textfield.dart';
 
 class EditDialog extends StatelessWidget {
   final TextEditingController title;
   final TextEditingController description;
-  const EditDialog({super.key, required this.title, required this.description});
+  final VoidCallback onTap;
+  const EditDialog({super.key, required this.title, required this.description, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +41,8 @@ class EditDialog extends StatelessWidget {
                     fontSize: 20
                 ),
               ),
-              BasicDialogTextField(controller: title, label: "Title"),
-              BasicDialogTextField(
+              BasicTextField(controller: title, label: "Title"),
+              BasicTextField(
                 controller: description,
                 label: "Description",
               ),
@@ -63,12 +65,11 @@ class EditDialog extends StatelessWidget {
                           theme.primaryColor,
                         ),
                       ),
+                      onPressed: onTap,
                       child: Text(
                         "Next",
                         style: TextStyle(color: theme.colorScheme.onPrimary),
                       ),
-                      onPressed: () async {
-                      },
                     ),
                   ),
                 ],

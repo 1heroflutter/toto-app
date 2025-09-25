@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_calendar/flutter_advanced_calendar.dart';
 
 class CalenderDialog extends StatefulWidget {
-  final AdvancedCalendarController controller;
-
-  const CalenderDialog({super.key, required this.controller});
+  final AdvancedCalendarController date;
+  const CalenderDialog({super.key, required this.date});
 
   @override
   State<CalenderDialog> createState() => _CalenderDialogState();
@@ -12,7 +11,6 @@ class CalenderDialog extends StatefulWidget {
 
 class _CalenderDialogState extends State<CalenderDialog> {
   DateTime? selectedDate;
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -25,7 +23,7 @@ class _CalenderDialogState extends State<CalenderDialog> {
           children: [
             Expanded(
               child: AdvancedCalendar(
-                controller: widget.controller,
+                controller: widget.date,
                 startWeekDay: 1,
                 events: [],
 
@@ -54,28 +52,29 @@ class _CalenderDialogState extends State<CalenderDialog> {
                       "Next",
                       style: TextStyle(color: theme.colorScheme.onPrimary),
                     ),
-                    onPressed: () async {
-                      selectedDate = widget.controller.value;
-                      if (selectedDate != null) {
-                        final TimeOfDay? picked = await showTimePicker(
-                          context: context,
-                          initialTime: TimeOfDay.now(),
-                        );
-                        if (picked != null) {
-                          final DateTime fullDateTime = DateTime(
-                            selectedDate!.year,
-                            selectedDate!.month,
-                            selectedDate!.day,
-                            picked.hour,
-                            picked.minute,
+                      onPressed: () async {
+                        selectedDate = widget.date.value;
+                        if (selectedDate != null) {
+                          final TimeOfDay? picked = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.now(),
                           );
-                          Navigator.pop(
-                            context,
-                            fullDateTime,
-                          );
+                          if (picked != null) {
+                            final DateTime fullDateTime = DateTime(
+                              selectedDate!.year,
+                              selectedDate!.month,
+                              selectedDate!.day,
+                              picked.hour,
+                              picked.minute,
+                            );
+                            Navigator.pop(
+                              context,
+                              fullDateTime,
+                            );
+                          }
                         }
                       }
-                    },
+
                   ),
                 ),
               ],

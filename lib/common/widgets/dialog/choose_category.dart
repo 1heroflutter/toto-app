@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mytodoapp/domain/task/entities/task_entity.dart';
 
-import '../../../data/task/models/category.dart';
+import '../../../data/task/models/task.dart';
 
 class ChooseCategoryDialog extends StatefulWidget {
   const ChooseCategoryDialog({super.key});
@@ -8,36 +9,67 @@ class ChooseCategoryDialog extends StatefulWidget {
   @override
   State<ChooseCategoryDialog> createState() => _ChooseCategoryDialogState();
 }
+
 class _ChooseCategoryDialogState extends State<ChooseCategoryDialog> {
-  String? selected;
-  final List<Color> availableColors = [
-    Colors.red,
-    Colors.blue,
-    Colors.green,
-    Colors.orange,
-    Colors.purple,
-    Colors.teal,
-    Colors.brown,
-    Colors.pink,
-    Colors.indigo,
-    Colors.cyan,
+  final List<CategoryEntity> listCategory = [
+    CategoryEntity(
+      name: 'Cook',
+      icon: Icons.soup_kitchen_outlined,
+      color: Colors.red.value,
+    ),
+    CategoryEntity(
+      name: 'Work',
+      icon: Icons.business_center_outlined,
+      color: Colors.grey.value,
+    ),
+    CategoryEntity(
+      name: 'Sport',
+      icon: Icons.sports_soccer,
+      color: Colors.greenAccent.value,
+    ),
+    CategoryEntity(
+      name: 'Design',
+      icon: Icons.design_services,
+      color: Colors.orange.value,
+    ),
+    CategoryEntity(
+      name: 'Study',
+      icon: Icons.school_outlined,
+      color: Colors.purple.value,
+    ),
+    CategoryEntity(
+      name: 'Social',
+      icon: Icons.facebook,
+      color: Colors.teal.value,
+    ),
+    CategoryEntity(
+      name: 'Music',
+      icon: Icons.music_note_outlined,
+      color: Colors.brown.value,
+    ),
+    CategoryEntity(
+      name: 'Health',
+      icon: Icons.health_and_safety_outlined,
+      color: Colors.pink.value,
+    ),
+    CategoryEntity(
+      name: 'Movie',
+      icon: Icons.movie_creation_outlined,
+      color: Colors.indigo.value,
+    ),
+    CategoryEntity(
+      name: 'Home',
+      icon: Icons.home_outlined,
+      color: Colors.cyan.value,
+    ),
+    CategoryEntity(
+      name: 'Create New',
+      icon: Icons.add,
+      color: Colors.green.value,
+    ),
   ];
-  Color getRandomColor(int index) {
-    return availableColors[index % availableColors.length];
-  }
-  final List<TaskCategory> listCategory = [
-    TaskCategory(name: 'Cook', icon: Icons.soup_kitchen_outlined),
-    TaskCategory(name: 'Work', icon: Icons.business_center_outlined),
-    TaskCategory(name: 'Sport', icon: Icons.sports_soccer),
-    TaskCategory(name: 'Design', icon: Icons.design_services),
-    TaskCategory(name: 'Study', icon: Icons.school_outlined),
-    TaskCategory(name: 'Social', icon: Icons.facebook),
-    TaskCategory(name: 'Music', icon: Icons.music_note_outlined),
-    TaskCategory(name: 'Health', icon: Icons.health_and_safety_outlined),
-    TaskCategory(name: 'Movie', icon: Icons.movie_creation_outlined),
-    TaskCategory(name: 'Home', icon: Icons.home_outlined),
-    TaskCategory(name: 'Create New', icon: Icons.add),
-  ];
+  late CategoryEntity? selected = listCategory[1] ;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -71,11 +103,18 @@ class _ChooseCategoryDialogState extends State<ChooseCategoryDialog> {
                   crossAxisSpacing: 8,
                   children: List.generate(listCategory.length, (index) {
                     final category = listCategory[index];
-                    final color = getRandomColor(index);
-                    final isSelected = selected == category.name;
+                    final isSelected = selected?.name == category.name;
 
                     return GestureDetector(
-                      onTap: () => setState(() => selected = category.name),
+                      onTap:
+                          () => setState(() {
+                            selected = CategoryEntity(
+                              name: category.name,
+                              icon: category.icon,
+                              color: category.color,
+                            );
+                          }),
+
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -83,15 +122,17 @@ class _ChooseCategoryDialogState extends State<ChooseCategoryDialog> {
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
-                              color: isSelected
-                                  ? theme.primaryColor
-                                  : color,
+                              color:
+                                  isSelected
+                                      ? theme.primaryColor
+                                      : Color(category.color),
                             ),
                             child: Icon(
                               category.icon,
-                              color: isSelected
-                                  ? theme.colorScheme.onPrimary
-                                  : theme.colorScheme.onBackground,
+                              color:
+                                  isSelected
+                                      ? theme.colorScheme.onPrimary
+                                      : theme.colorScheme.onBackground,
                             ),
                           ),
                           const SizedBox(height: 4),
@@ -113,8 +154,7 @@ class _ChooseCategoryDialogState extends State<ChooseCategoryDialog> {
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ButtonStyle(
-                    backgroundColor:
-                    WidgetStatePropertyAll(theme.primaryColor),
+                    backgroundColor: WidgetStatePropertyAll(theme.primaryColor),
                   ),
                   onPressed: () => Navigator.pop(context, selected),
                   child: Text(

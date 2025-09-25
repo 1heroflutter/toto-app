@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mytodoapp/domain/auth/usecase/signout.dart';
 import 'package:mytodoapp/presentation/auth/pages/signin.dart';
+import 'package:mytodoapp/presentation/profile/pages/setting_pages.dart';
 import 'package:mytodoapp/presentation/profile/widgets/basic_headline.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../common/helper/app_navigator.dart';
 import '../../../common/widgets/appbar/basic_appbar.dart';
 import '../../../core/config/theme/theme_provider.dart';
+import '../../../service_locator.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
@@ -46,7 +49,7 @@ class ProfilePage extends ConsumerWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
+              padding: const EdgeInsets.symmetric(horizontal:16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -63,11 +66,14 @@ class ProfilePage extends ConsumerWidget {
                           ),
                         ),
                       ),
-                      SizedBox(width: MediaQuery.of(context).size.width*0.02,),
+                      SizedBox(width: MediaQuery.of(context).size.width * 0.02),
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {},
-                          child: Text("X Task done",style: TextStyle(color: theme.primaryColor),),
+                          child: Text(
+                            "X Task done",
+                            style: TextStyle(color: theme.primaryColor),
+                          ),
                         ),
                       ),
                     ],
@@ -79,7 +85,9 @@ class ProfilePage extends ConsumerWidget {
                     "App Settings",
                     theme,
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        AppNavigator.push(context, SettingPages());
+                      },
                       icon: Icon(Icons.navigate_next, size: 20),
                     ),
                     () {},
@@ -181,7 +189,14 @@ class ProfilePage extends ConsumerWidget {
                       ],
                     ),
                   ),
-                  _settingBtn(Icons.logout, "Logout", theme, null, () async {}),
+                  _settingBtn(Icons.logout, "Logout", theme, null, () async {
+                    try {
+                      await sl<SignOutUseCase>().call();
+                      AppNavigator.pushAndRemove(context, SigninPage());
+                    }catch(e){
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+                    }
+                  }),
                 ],
               ),
             ),

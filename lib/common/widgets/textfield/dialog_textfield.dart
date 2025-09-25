@@ -1,14 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class BasicDialogTextField extends StatelessWidget {
+class BasicTextField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
+  final String? errorText;
 
-  const BasicDialogTextField({
+  const BasicTextField({
     super.key,
     required this.controller,
     required this.label,
+    this.errorText,
   });
 
   @override
@@ -17,19 +19,24 @@ class BasicDialogTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       cursorColor: theme.primaryColor,
-
+      onTapOutside: (event) {
+        FocusScope.of(context).unfocus();
+      },
       decoration: InputDecoration(
-
-        focusedBorder:OutlineInputBorder(
+        focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(width: 1, color: theme.primaryColor),
-        ) ,
-        label: Text(label,style: TextStyle(color: theme.colorScheme.onPrimary),),
+        ),
+        label: Text(
+          label,
+          style: TextStyle(color: theme.colorScheme.onPrimary),
+        ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(width: 1, color: theme.colorScheme.onPrimary),
         ),
         border: OutlineInputBorder(
           borderSide: BorderSide(width: 1, color: theme.colorScheme.onPrimary),
         ),
+        errorText: errorText,
       ),
     );
   }
