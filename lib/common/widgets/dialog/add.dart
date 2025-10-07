@@ -189,7 +189,7 @@ class _AddDialogState extends State<AddDialog> {
                           priority:
                               priority.text.isNotEmpty
                                   ? int.parse(priority.text)
-                                  : null, uid: ,
+                                  : null,
                         ),
                       );
                       AppNavigator.pop(context);

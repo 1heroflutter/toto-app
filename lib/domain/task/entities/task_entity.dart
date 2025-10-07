@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 class TaskEntity {
   final String? id;
-  final String uid;
+  final String? uid;
   final bool? isDone;
   final String? title;
   final String content;
@@ -12,7 +12,7 @@ class TaskEntity {
 
   TaskEntity({
     this.id,
-    required this.uid,
+     this.uid,
     this.isDone,
     this.title,
     required this.content,

@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mytodoapp/common/bloc/generic_data_cubit.dart';
+import 'package:mytodoapp/common/bloc/generic_data_state.dart';
+import 'package:mytodoapp/domain/auth/entities/user.dart';
+import 'package:mytodoapp/domain/auth/repositories/auth_repository.dart';
+import 'package:mytodoapp/domain/auth/usecase/get_current_user.dart';
 import 'package:mytodoapp/domain/auth/usecase/signout.dart';
 import 'package:mytodoapp/presentation/auth/pages/signin.dart';
 import 'package:mytodoapp/presentation/profile/pages/setting_pages.dart';
 import 'package:mytodoapp/presentation/profile/widgets/basic_headline.dart';
+import 'package:mytodoapp/presentation/profile/widgets/task_status.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../common/helper/app_navigator.dart';
@@ -12,7 +19,10 @@ import '../../../core/config/theme/theme_provider.dart';
 import '../../../service_locator.dart';
 
 class ProfilePage extends ConsumerWidget {
-  const ProfilePage({super.key});
+   ProfilePage({super.key});
+  final currentUserProvider = FutureProvider<UserEntity?>((ref) async {
+    return await sl<AuthRepository>().loadUser();
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,11 +30,15 @@ class ProfilePage extends ConsumerWidget {
     final themeMode = ref.watch(themeNotifierProvider);
     final notifier = ref.read(themeNotifierProvider.notifier);
 
+    final currentUserAsync = ref.watch(currentUserProvider);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size(
           double.infinity,
-          MediaQuery.of(context).size.height * 0.05,
+          MediaQuery
+              .of(context)
+              .size
+              .height * 0.05,
         ),
         child: BasicAppBar(
           icon: null,
@@ -40,44 +54,35 @@ class ProfilePage extends ConsumerWidget {
               decoration: BoxDecoration(shape: BoxShape.circle),
               child: Icon(Icons.account_circle_outlined, size: 100),
             ),
-            Text(
-              "Hoang Nhat",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-                color: theme.colorScheme.onPrimary,
-              ),
+            currentUserAsync.when(
+              data: (user) {
+                if (user == null) {
+                  return Center(child: Text("No user logged in"));
+                }
+                return Column(
+                  children: [
+                    Text(
+                      user.email ?? "No email",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                        color: theme.colorScheme.onPrimary,
+                      ),
+                    ),
+                  ],
+                );
+              },
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (err, stack) => Center(child: Text("Error: $err")),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal:16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: Text(
-                            "X Task left",
-                            style: TextStyle(color: theme.primaryColor),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.02),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: Text(
-                            "X Task done",
-                            style: TextStyle(color: theme.primaryColor),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  TaskStatus(),
                   BasicHeadline(text: "Settings"),
 
                   _settingBtn(
@@ -90,7 +95,7 @@ class ProfilePage extends ConsumerWidget {
                       },
                       icon: Icon(Icons.navigate_next, size: 20),
                     ),
-                    () {},
+                        () {},
                   ),
                   BasicHeadline(text: "Account"),
 
@@ -102,7 +107,7 @@ class ProfilePage extends ConsumerWidget {
                       onPressed: () {},
                       icon: Icon(Icons.navigate_next, size: 20),
                     ),
-                    () {},
+                        () {},
                   ),
                   _settingBtn(
                     Icons.key,
@@ -112,7 +117,7 @@ class ProfilePage extends ConsumerWidget {
                       onPressed: () {},
                       icon: Icon(Icons.navigate_next_outlined, size: 20),
                     ),
-                    () {},
+                        () {},
                   ),
                   _settingBtn(
                     Icons.camera_alt_outlined,
@@ -122,7 +127,7 @@ class ProfilePage extends ConsumerWidget {
                       onPressed: () {},
                       icon: Icon(Icons.navigate_next_outlined, size: 20),
                     ),
-                    () {},
+                        () {},
                   ),
                   BasicHeadline(text: "Uptodo"),
                   _settingBtn(
@@ -133,7 +138,7 @@ class ProfilePage extends ConsumerWidget {
                       onPressed: () {},
                       icon: Icon(Icons.navigate_next_outlined, size: 20),
                     ),
-                    () {},
+                        () {},
                   ),
                   _settingBtn(
                     Icons.info_outline,
@@ -143,7 +148,7 @@ class ProfilePage extends ConsumerWidget {
                       onPressed: () {},
                       icon: Icon(Icons.navigate_next_outlined, size: 20),
                     ),
-                    () {},
+                        () {},
                   ),
                   _settingBtn(
                     Icons.electric_bolt_rounded,
@@ -153,7 +158,7 @@ class ProfilePage extends ConsumerWidget {
                       onPressed: () {},
                       icon: Icon(Icons.navigate_next_outlined, size: 20),
                     ),
-                    () {},
+                        () {},
                   ),
                   _settingBtn(
                     Icons.thumb_up_alt_outlined,
@@ -163,10 +168,13 @@ class ProfilePage extends ConsumerWidget {
                       onPressed: () {},
                       icon: Icon(Icons.navigate_next_outlined, size: 20),
                     ),
-                    () {},
+                        () {},
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.06,
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.06,
                     child: Row(
                       children: [
                         const Icon(Icons.dark_mode_outlined, size: 22),
@@ -193,8 +201,9 @@ class ProfilePage extends ConsumerWidget {
                     try {
                       await sl<SignOutUseCase>().call();
                       AppNavigator.pushAndRemove(context, SigninPage());
-                    }catch(e){
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(e.toString())));
                     }
                   }),
                 ],
@@ -206,13 +215,11 @@ class ProfilePage extends ConsumerWidget {
     );
   }
 
-  Widget _settingBtn(
-    IconData icon,
-    String content,
-    ThemeData theme,
-    IconButton? suffer,
-    VoidCallback onPress,
-  ) {
+  Widget _settingBtn(IconData icon,
+      String content,
+      ThemeData theme,
+      IconButton? suffer,
+      VoidCallback onPress,) {
     return GestureDetector(
       onTap: onPress,
       child: Container(

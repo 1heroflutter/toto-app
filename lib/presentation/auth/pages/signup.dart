@@ -1,13 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:mytodoapp/data/auth/models/user_params.dart';
+import 'package:mytodoapp/data/auth/models/user.dart';
+import 'package:mytodoapp/domain/auth/entities/user.dart';
 import 'package:mytodoapp/domain/auth/usecase/signup.dart';
 import 'package:mytodoapp/presentation/auth/pages/signin.dart';
 
 import '../../../common/helper/app_navigator.dart';
 import '../../../common/widgets/appbar/basic_appbar.dart';
-import '../../../common/widgets/textfield/basicTextfield.dart';
+import '../../../common/widgets/textfield/basic_text_field.dart';
 import '../../../common/widgets/button/basic_elevated_btn.dart';
 import '../../../common/widgets/button/basic_react_btn.dart';
 import '../../../core/config/assets/app_vectors.dart';
@@ -63,11 +64,21 @@ class _SignupPageState extends State<SignupPage> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.06),
-                BasicTextField(controller: email, label: "UserName"),
+                BasicTextField(controller: email, label: "Email"),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-                BasicTextField(controller: password, label: "Password",errorText: _passwordError,),
+                BasicTextField(
+                  controller: password,
+                  label: "Password",
+                  errorText: _passwordError,
+                  obscureText: true,
+                ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-                BasicTextField(controller: confirmPassword, label: "Confirm Password",errorText: _confirmPasswordError,),
+                BasicTextField(
+                  controller: confirmPassword,
+                  label: "Confirm Password",
+                  errorText: _confirmPasswordError,
+                  obscureText: true,
+                ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                 BasicReactBtn(
                   label: "Register",
@@ -91,17 +102,19 @@ class _SignupPageState extends State<SignupPage> {
 
                     // gọi usecase
                     return await sl<SignUpUseCase>().call(
-                      params: UserParams(
+                      params: UserEntity(
                         email: email.text,
                         password: password.text,
-                        isRemember: false,
                       ),
                     );
                   },
                   onSuccess: () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text("Đăng ký thành công!", style: TextStyle(color: Colors.white)),
+                        content: Text(
+                          "Đăng ký thành công!",
+                          style: TextStyle(color: Colors.white),
+                        ),
                         backgroundColor: Colors.green,
                       ),
                     );
@@ -131,11 +144,11 @@ class _SignupPageState extends State<SignupPage> {
                     });
                     //Mở và chọn tài khoản gg
                     final GoogleSignInAccount? googleUser =
-                    await GoogleSignIn().signIn();
+                        await GoogleSignIn().signIn();
                     if (googleUser == null) ;
                     //lấy token xác thực
                     final GoogleSignInAuthentication googleAuth =
-                    await googleUser!.authentication;
+                        await googleUser!.authentication;
                     //tạo credential cho firebase
                     final credential = GoogleAuthProvider.credential(
                       idToken: googleAuth.idToken,
@@ -145,8 +158,8 @@ class _SignupPageState extends State<SignupPage> {
                       params: credential,
                     );
                     return signin.fold(
-                          (failure) => print("❌ Error: $failure"),
-                          (user) {
+                      (failure) => print("❌ Error: $failure"),
+                      (user) {
                         print("✅ Login success: ${user.displayName}");
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -186,7 +199,7 @@ class _SignupPageState extends State<SignupPage> {
                       },
                       child: Text(
                         "Login",
-                        style: TextStyle(color: AppColors.primary),
+                        style: TextStyle(color: theme.primaryColor),
                       ),
                     ),
                   ],
@@ -203,7 +216,7 @@ class _SignupPageState extends State<SignupPage> {
             ),
           },
         ],
-      )
+      ),
     );
   }
 }

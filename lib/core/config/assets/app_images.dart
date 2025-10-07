@@ -6,8 +6,6 @@ class AppImages{
   static const onBoarding2 = '${basePath}onBoarding2.jpg';
   static const onBoarding3 = '${basePath}onBoarding3.jpg';
   static const homeEmpty = '${basePath}home_empty.png';
-
-  // static const imgNotFound = 'https://i.sstatic.net/y9DpT.jpg';
-  // static const no_result = '${basePath}no_results.png';
+  static const aiAssistant = '${basePath}ai_assistant.png';
 
 }

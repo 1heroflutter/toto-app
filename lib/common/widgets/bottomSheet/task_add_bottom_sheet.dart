@@ -10,14 +10,14 @@ import '../dialog/choose_category.dart';
 import '../dialog/task_priority.dart';
 import '../textfield/dialog_textfield.dart';
 
-class BasicBottomSheet extends StatefulWidget {
-  const BasicBottomSheet({super.key});
+class TaskAddBottomSheet extends StatefulWidget {
+  const TaskAddBottomSheet({super.key});
 
   @override
-  State<BasicBottomSheet> createState() => _BasicBottomSheetState();
+  State<TaskAddBottomSheet> createState() => _TaskAddBottomSheetState();
 }
 
-class _BasicBottomSheetState extends State<BasicBottomSheet> {
+class _TaskAddBottomSheetState extends State<TaskAddBottomSheet> {
   TextEditingController title = TextEditingController();
 
    TextEditingController description = TextEditingController();
@@ -156,7 +156,6 @@ class _BasicBottomSheetState extends State<BasicBottomSheet> {
                     final response = await sl<AddTaskUseCase>().call(
                       params: TaskEntity(
                         title: title.text,
-                        uid: ,
                         content: description.text,
                         category: categoryEntity,
                         date: calendarController.value,

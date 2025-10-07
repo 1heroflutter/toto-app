@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ThemeNotifier extends Notifier<ThemeMode> {
   @override
   ThemeMode build() {
-    // chỉ return mặc định, không load async ở đây
     return ThemeMode.system;
   }
 

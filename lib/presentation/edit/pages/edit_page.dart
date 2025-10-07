@@ -11,6 +11,7 @@ import 'package:mytodoapp/common/widgets/dialog/task_priority.dart';
 import 'package:mytodoapp/domain/task/entities/task_entity.dart';
 import 'package:mytodoapp/domain/task/usecase/delete_task.dart';
 import 'package:mytodoapp/domain/task/usecase/update_task.dart';
+import 'package:mytodoapp/presentation/edit/widgets/expandable_text.dart';
 import 'package:mytodoapp/presentation/edit/widgets/task_component.dart';
 import 'package:mytodoapp/presentation/home/pages/home_page.dart';
 
@@ -107,18 +108,7 @@ class _EditPageState extends State<EditPage> {
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.72,
-                    height:
-                        task.content.length > 12
-                            ? MediaQuery.of(context).size.height * 0.1
-                            : MediaQuery.of(context).size.height * 0.03,
-                    child: SingleChildScrollView(
-                      child: Text(
-                        task.content,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSecondary,
-                        ),
-                      ),
-                    ),
+                    child: ExpandableText(content: task.content),
                   ),
                 ],
               ),
@@ -311,6 +301,7 @@ class _EditPageState extends State<EditPage> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () async {
+                        final int? priority = priorityController.text.isEmpty?null:int.parse(priorityController.text);
                         final response = await sl<UpdateTaskUseCase>().call(
                           params: TaskEntity(
                             id: task.id,
@@ -318,7 +309,7 @@ class _EditPageState extends State<EditPage> {
                             title: title.text,
                             date: date,
                             category: category,
-                            priority: int.parse(priorityController.text),
+                            priority: priority,
                             uid: task.uid,
                           ),
                         );
@@ -332,7 +323,7 @@ class _EditPageState extends State<EditPage> {
                             );
                           },
                           (r) {
-                            Navigator.pop(context); // đóng dialog/screen
+                            Navigator.pop(context);
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text("Cập nhật thành công"),

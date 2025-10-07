@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mytodoapp/common/bloc/generic_data_cubit.dart';
+import 'package:mytodoapp/common/widgets/task_is_empty.dart';
 
 import '../../../common/bloc/generic_data_state.dart';
 import '../../../common/widgets/list_task.dart';
@@ -50,7 +51,6 @@ class _GetTaskState extends State<GetTask> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return BlocProvider.value(
       value: cubit,
       child: BlocBuilder<GenericDataCubit, GenericDataState>(
@@ -67,29 +67,7 @@ class _GetTaskState extends State<GetTask> {
               );
             } else {
               return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(AppImages.homeEmpty),
-                    Text(
-                      "What do you want to do today?",
-                      style: TextStyle(
-                        color: theme.colorScheme.onPrimary,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                    Text(
-                      "Tap + to add your task",
-                      style: TextStyle(
-                        color: theme.colorScheme.onPrimary,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
-                ),
+                child: TaskIsEmpty()
               );
             }
           }

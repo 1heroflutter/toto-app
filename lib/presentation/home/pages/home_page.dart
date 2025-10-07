@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mytodoapp/common/bloc/generic_data_cubit.dart';
 import 'package:mytodoapp/common/bloc/generic_data_state.dart';
 import 'package:mytodoapp/common/widgets/appbar/basic_appbar.dart';
+import 'package:mytodoapp/common/widgets/task_is_empty.dart';
 import 'package:mytodoapp/common/widgets/list_task.dart';
 import 'package:mytodoapp/common/widgets/search_bar.dart';
 import 'package:mytodoapp/common/widgets/task.dart';
@@ -22,6 +23,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late List<TaskEntity> listTask;
+
   @override
   Widget build(BuildContext context) {
     final space = SizedBox(height: MediaQuery.of(context).size.height * 0.02);
@@ -44,69 +46,35 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SearchBarWidget(),
           space,
-
-          BlocProvider(
-            create:
-                (_) => TaskCubit(sl<GetAllTaskUseCase>())..getTasks(),
-            child: BlocBuilder<TaskCubit, GenericDataState>(
-              builder: (context, state) {
-                if (state is DataLoading) {
-                  return Center(child: CircularProgressIndicator());
-                }
-                if (state is DataLoaded) {
-                  if (state.data != null && state.data.isNotEmpty) {
-                    listTask = state.data;
-                    return Flexible(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            const SearchBarWidget(),
-                            space,
-                            const SizedBox(height: 16),
-                            ListTask(tasks: state.data),
-                          ],
-                        ),
+          BlocBuilder<TaskCubit, GenericDataState>(
+            builder: (context, state) {
+              if (state is DataLoading) {
+                return Center(child: CircularProgressIndicator());
+              }
+              if (state is DataLoaded) {
+                if (state.data != null && state.data.isNotEmpty) {
+                  listTask = state.data;
+                  return Flexible(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          ListTask(tasks: state.data),
+                        ],
                       ),
-                    );
-                  } else {
-                    return Expanded(
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(AppImages.homeEmpty),
-                            Text(
-                              "What do you want to do today?",
-                              style: TextStyle(
-                                color: theme.colorScheme.onPrimary,
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            space,
-                            Text(
-                              "Tap + to add your task",
-                              style: TextStyle(
-                                color: theme.colorScheme.onPrimary,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }
+                    ),
+                  );
+                } else {
+                  return Expanded(child: Center(child: TaskIsEmpty()));
                 }
-                if (state is FailureLoadData) {
-                  return Center(child: Text(state.errorMessage));
-                }
-                return Container();
-              },
-            ),
+              }
+              if (state is FailureLoadData) {
+                return Center(child: Text(state.errorMessage));
+              }
+              return Container();
+            },
           ),
         ],
       ),

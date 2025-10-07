@@ -107,7 +107,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                   shape: BoxShape.circle,
                                   color:
                                       currentPage == 0
-                                          ? AppColors.primary
+                                          ? theme.primaryColor
                                           : Colors.grey,
                                 ),
                                 height: 15,
@@ -119,7 +119,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                   shape: BoxShape.circle,
                                   color:
                                       currentPage == 1
-                                          ? AppColors.primary
+                                          ? theme.primaryColor
                                           : Colors.grey,
                                 ),
                                 height: 15,
@@ -132,7 +132,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                   shape: BoxShape.circle,
                                   color:
                                       currentPage == 2
-                                          ? AppColors.primary
+                                          ? theme.primaryColor
                                           : Colors.grey,
                                 ),
                                 height: 15,
@@ -152,7 +152,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                   },
                                   child: Text(
                                     "Back",
-                                    style: TextStyle(color: AppColors.primary),
+                                    style: TextStyle(color: theme.primaryColor),
                                   ),
                                 ),
                               ElevatedButton(

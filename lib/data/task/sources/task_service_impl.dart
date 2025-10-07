@@ -4,17 +4,18 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:mytodoapp/data/task/models/task.dart';
 
 import '../../../domain/task/entities/task_entity.dart';
+import '../../notify/sources/local_notification_service.dart';
 
 abstract class TaskService {
-  Future<Either> addNewTask(TaskEntity task);
+  Future<Either> addNewTask(TaskEntity task, String uid);
 
-  Stream<Either> getAllTask();
+  Stream<Either> getAllTask(String uid);
 
-  Future<Either> getTaskByDate(DateTime date, bool isDone);
+  Future<Either> getTaskByDate(DateTime date, bool isDone, String uid);
 
   Future<Either> deleteTask(String id);
 
-  Future<Either> updateTask(TaskEntity task);
+  Future<Either> updateTask(TaskEntity task, String uid);
 
   Future<Either> isDone(String id, bool isDone);
 }
@@ -22,8 +23,7 @@ abstract class TaskService {
 class TaskSeviceImpl extends TaskService {
   final FirebaseFirestore firebaseStorage = FirebaseFirestore.instance;
 
-  @override
-  Future<Either> addNewTask(TaskEntity task) async {
+  Future<Either> addNewTask(TaskEntity task, String uid) async {
     try {
       final taskModel = TaskModel(
         title: task.title,
@@ -39,11 +39,28 @@ class TaskSeviceImpl extends TaskService {
                 )
                 : null,
         priority: task.priority,
-        uid: task.uid,
+        uid: uid,
       );
 
-      await firebaseStorage.collection("tasks").add(taskModel.toJson());
+      final docRef = await firebaseStorage
+          .collection("tasks")
+          .add(taskModel.toJson());
 
+      // Schedule notification nếu task có date
+      if (task.date != null) {
+        final now = DateTime.now();
+        final scheduled = task.date!;
+        if (scheduled.isAfter(now.add(const Duration(seconds: 5)))) {
+          await LocalNotificationService.scheduleNotification(
+            id: docRef.id.hashCode,
+            title: task.title ?? "Task Reminder",
+            body: task.content ?? "",
+            scheduledDate: scheduled,
+          );
+        } else {
+          print("⏰ Task '${task.title}' có thời gian trong quá khứ, bỏ qua notification.");
+        }
+      }
       return Right("Tạo mới thành công!");
     } catch (e) {
       return Left(e);
@@ -60,8 +77,7 @@ class TaskSeviceImpl extends TaskService {
     }
   }
 
-  @override
-  Future<Either> updateTask(TaskEntity task) async {
+  Future<Either> updateTask(TaskEntity task, String uid) async {
     try {
       final taskModel = TaskModel(
         title: task.title,
@@ -76,15 +92,29 @@ class TaskSeviceImpl extends TaskService {
                 )
                 : null,
         priority: task.priority,
-        uid: task.uid,
+        uid: uid,
       );
+
       await firebaseStorage
           .collection("tasks")
           .doc(task.id)
-          .set(
-            taskModel.toJson(),
-            SetOptions(merge: true), // không overwrite field khác
+          .set(taskModel.toJson(), SetOptions(merge: true));
+
+      // Schedule notification
+      if (task.date != null) {
+        final now = DateTime.now();
+        final scheduled = task.date!;
+        if (scheduled.isAfter(now.add(const Duration(seconds: 5)))) {
+          await LocalNotificationService.scheduleNotification(
+            id: task.id!.hashCode,
+            title: task.title ?? "Task Reminder",
+            body: task.content ?? "",
+            scheduledDate: scheduled,
           );
+        } else {
+          print("⏰ Task '${task.title}' có thời gian trong quá khứ, bỏ qua notification.");
+        }
+      }
       return Right("Cập nhập thành công!");
     } catch (e) {
       return Left(e);
@@ -104,9 +134,13 @@ class TaskSeviceImpl extends TaskService {
   }
 
   @override
-  Stream<Either> getAllTask() async* {
+  Stream<Either> getAllTask(String uid) async* {
     try {
-      final snapshot = firebaseStorage.collection("tasks").snapshots();
+      final snapshot =
+          firebaseStorage
+              .collection("tasks")
+              .where("uid", isEqualTo: uid)
+              .snapshots();
       await for (final docs in snapshot) {
         yield Right(docs.docs);
       }
@@ -116,7 +150,7 @@ class TaskSeviceImpl extends TaskService {
   }
 
   @override
-  Future<Either> getTaskByDate(DateTime date, bool isDone) async {
+  Future<Either> getTaskByDate(DateTime date, bool isDone, String uid) async {
     final startOfDay = DateTime(date.year, date.month, date.day);
     final endOfDay = DateTime(date.year, date.month, date.day, 23, 59, 59);
 
@@ -130,6 +164,7 @@ class TaskSeviceImpl extends TaskService {
               )
               .where("date", isLessThanOrEqualTo: Timestamp.fromDate(endOfDay))
               .where("isDone", isEqualTo: isDone)
+              .where("uid", isEqualTo: uid)
               .get();
       return Right(returnData);
     } catch (e) {

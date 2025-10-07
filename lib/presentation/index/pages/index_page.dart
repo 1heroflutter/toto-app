@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mytodoapp/common/widgets/bottomSheet/basic_bottom_sheet.dart';
+import 'package:mytodoapp/common/widgets/bottomSheet/task_add_bottom_sheet.dart';
 import 'package:mytodoapp/common/widgets/dialog/add.dart';
+import 'package:mytodoapp/presentation/assistant/pages/assistant_page.dart';
 import 'package:mytodoapp/presentation/edit/pages/edit_page.dart';
 import '../../calendar/pages/calendar_page.dart';
 import '../../focus/pages/focus_page.dart';
@@ -23,9 +24,9 @@ class _IndexPageState extends State<IndexPage> {
       case 1:
         return const CalendarPage();
       case 2:
-        return const FocusPage();
+        return const AssistantPage();
       case 3:
-        return const ProfilePage();
+        return ProfilePage();
       default:
         return const HomePage();
     }
@@ -36,7 +37,7 @@ class _IndexPageState extends State<IndexPage> {
     final ThemeData theme = Theme.of(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: _currentIndex!=2?FloatingActionButton(
         backgroundColor: theme.primaryColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusGeometry.circular(100),
@@ -51,7 +52,7 @@ class _IndexPageState extends State<IndexPage> {
                 padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom,
                 ),
-                child: const BasicBottomSheet(),
+                child: const TaskAddBottomSheet(),
               );
             },
           );
@@ -59,7 +60,7 @@ class _IndexPageState extends State<IndexPage> {
         },
 
         child: const Icon(Icons.add),
-      ),
+      ):null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
@@ -98,7 +99,7 @@ class _IndexPageState extends State<IndexPage> {
             const SizedBox(width: 48),
             IconButton(
               icon: Icon(
-                Icons.access_time_outlined,
+                Icons.auto_awesome,
                 color:
                     _currentIndex == 2
                         ? theme.primaryColor

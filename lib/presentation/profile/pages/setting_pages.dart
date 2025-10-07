@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mytodoapp/common/helper/app_navigator.dart';
 
 import '../../../common/widgets/appbar/basic_appbar.dart';
+import '../../../core/config/theme/color_notifier.dart';
 import '../widgets/basic_headline.dart';
 
-class SettingPages extends StatelessWidget {
+class SettingPages extends ConsumerWidget {
   const SettingPages({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -28,6 +31,7 @@ class SettingPages extends StatelessWidget {
         child: Column(
           children: [
             Padding(
+
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,10 +43,14 @@ class SettingPages extends StatelessWidget {
                     "Change app color",
                     theme,
                     IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.navigate_next, size: 20),
+                      onPressed: () {
+                        _showColorPickerDialog(context, ref);
+                      },
+                      icon: const Icon(Icons.navigate_next, size: 20),
                     ),
-                        () {},
+                        () {
+                      _showColorPickerDialog(context, ref);
+                    },
                   ),
                   _settingBtn(
                     Icons.font_download_outlined,
@@ -112,6 +120,42 @@ class SettingPages extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void _showColorPickerDialog(BuildContext context, WidgetRef ref) {
+    Color currentColor = ref.read(colorNotifierProvider);
+
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: const Text("Chọn màu ứng dụng"),
+          content: SingleChildScrollView(
+            child: ColorPicker(
+              pickerColor: currentColor,
+              onColorChanged: (Color color) {
+                currentColor = color;
+              },
+              enableAlpha: false,
+              pickerAreaHeightPercent: 0.8,
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: const Text("Hủy"),
+              onPressed: () => Navigator.pop(context),
+            ),
+            ElevatedButton(
+              child: const Text("Chọn"),
+              onPressed: () {
+                ref.read(colorNotifierProvider.notifier).setColor(currentColor);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

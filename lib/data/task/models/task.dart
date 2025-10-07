@@ -12,7 +12,7 @@ class CategoryModel {
 
 class TaskModel {
   final String? id;
-  final String uid;
+  final String? uid;
   final bool? isDone;
   final String? title;
   final String content;
@@ -21,7 +21,7 @@ class TaskModel {
   final int? priority;
   TaskModel({
     this.id,
-    required this.uid,
+     this.uid,
     this.isDone,
     this.title,
     required this.content,
@@ -34,7 +34,7 @@ class TaskModel {
     final json = doc.data() as Map<String, dynamic>;
     return TaskModel(
       id: doc.id,
-      uid: json["uid"],
+      uid: json["uid"] as String,
       isDone: json['isDone'],
       title: json["title"],
       content: json["content"],

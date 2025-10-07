@@ -1,13 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mytodoapp/common/bloc/generic_data_cubit.dart';
 import 'package:mytodoapp/common/helper/app_navigator.dart';
 import 'package:mytodoapp/common/widgets/appbar/basic_appbar.dart';
-import 'package:mytodoapp/common/widgets/textfield/basicTextfield.dart';
+import 'package:mytodoapp/common/widgets/textfield/basic_text_field.dart';
 import 'package:mytodoapp/common/widgets/button/basic_elevated_btn.dart';
 import 'package:mytodoapp/common/widgets/button/basic_react_btn.dart';
 import 'package:mytodoapp/core/config/assets/app_vectors.dart';
-import 'package:mytodoapp/data/auth/models/user_params.dart';
+import 'package:mytodoapp/data/auth/models/user.dart';
+import 'package:mytodoapp/domain/auth/entities/user.dart';
 import 'package:mytodoapp/domain/auth/usecase/signin.dart';
 import 'package:mytodoapp/domain/auth/usecase/signin_with_google.dart';
 import 'package:mytodoapp/presentation/auth/pages/signup.dart';
@@ -63,9 +66,19 @@ class _SigninPageState extends State<SigninPage> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.06),
-                BasicTextField(controller: email, label: "UserName",errorText: _usernameError,),
+                BasicTextField(
+                  controller: email,
+                  label: "Email",
+                  errorText: _usernameError,
+                ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-                BasicTextField(controller: password, label: "Password", errorText: _passwordError,),
+                BasicTextField(
+                  controller: password,
+                  label: "Password",
+                  errorText: _passwordError,
+                  obscureText: true,
+
+                ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                 BasicReactBtn(
                   label: "SignIn",
@@ -85,10 +98,9 @@ class _SigninPageState extends State<SigninPage> {
                       });
                     }
                     return await sl<SignInUseCase>().call(
-                      params: UserParams(
+                      params: UserEntity(
                         email: email.text,
                         password: password.text,
-                        isRemember: false,
                       ),
                     );
                   },
@@ -143,7 +155,6 @@ class _SigninPageState extends State<SigninPage> {
                     return signin.fold(
                       (failure) => print("❌ Error: $failure"),
                       (user) {
-                        print("✅ Login success: ${user.displayName}");
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
@@ -182,7 +193,7 @@ class _SigninPageState extends State<SigninPage> {
                       },
                       child: Text(
                         "Register",
-                        style: TextStyle(color: AppColors.primary),
+                        style: TextStyle(color: theme.primaryColor),
                       ),
                     ),
                   ],

@@ -1,13 +1,14 @@
 import 'package:dartz/dartz.dart';
+import 'package:mytodoapp/domain/auth/entities/user.dart';
 
 import '../../../core/usecase/usecase.dart';
-import '../../../data/auth/models/user_params.dart';
+import '../../../data/auth/models/user.dart';
 import '../../../service_locator.dart';
 import '../repositories/auth_repository.dart';
 
-class SignInUseCase extends UseCase<Either, UserParams> {
+class SignInUseCase extends UseCase<Either, UserEntity> {
   @override
-  Future<Either> call({ UserParams? params}) async {
+  Future<Either> call({ UserEntity? params}) async {
     return await sl<AuthRepository>().signIn(params!);
   }
 }
