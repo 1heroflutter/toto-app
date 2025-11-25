@@ -13,6 +13,7 @@ class TaskCubit extends Cubit<GenericDataState> {
   TaskCubit(this.getAll) : super(DataLoading());
 
   void getTasks() async {
+
     final stream = await getAll();
     _subscription = stream.listen((either) {
       either.fold((e) => emit(FailureLoadData(errorMessage: e)), (tasks) {

@@ -21,14 +21,6 @@ class _ChatInputBarState extends State<ChatInputBar> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2,
-            blurRadius: 7,
-            offset: const Offset(0, 3),
-          ),
-        ],
         color: theme.colorScheme.background,
       ),
       child: Row(
@@ -55,9 +47,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
               color: theme.colorScheme.primary,
             ),
             onPressed: () {
-              if (widget.controller.text.trim().isNotEmpty) {
-                widget.onSend(widget.controller.text.trim());
-              }
+                widget.onSend(widget.controller.text);
             },
           ),
         ],

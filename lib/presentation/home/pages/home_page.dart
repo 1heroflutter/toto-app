@@ -38,45 +38,48 @@ class _HomePageState extends State<HomePage> {
         child: BasicAppBar(
           icon: Icons.sort,
           title: Text(
-            'Index',
+            'Home',
             style: TextStyle(color: theme.colorScheme.onPrimary),
           ),
           onLeadingTap: () {},
           suffer: null,
         ),
       ),
-      body: Column(
-        children: [
-          const SearchBarWidget(),
-          space,
-          BlocBuilder<TaskCubit, GenericDataState>(
-            builder: (context, state) {
-              if (state is DataLoading) {
-                return Center(child: CircularProgressIndicator());
-              }
-              if (state is DataLoaded) {
-                if (state.data != null && state.data.isNotEmpty) {
-                  listTask = state.data;
-                  return Flexible(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          ListTask(tasks: state.data),
-                        ],
-                      ),
-                    ),
-                  );
-                } else {
-                  return Expanded(child: Center(child: TaskIsEmpty()));
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 14.0),
+        child: Column(
+          children: [
+            const SearchBarWidget(),
+            space,
+            BlocBuilder<TaskCubit, GenericDataState>(
+              builder: (context, state) {
+                if (state is DataLoading) {
+                  return Center(child: CircularProgressIndicator());
                 }
-              }
-              if (state is FailureLoadData) {
-                return Center(child: Text(state.errorMessage));
-              }
-              return Container();
-            },
-          ),
-        ],
+                if (state is DataLoaded) {
+                  if (state.data != null && state.data.isNotEmpty) {
+                    listTask = state.data;
+                    return Flexible(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            ListTask(tasks: state.data),
+                          ],
+                        ),
+                      ),
+                    );
+                  } else {
+                    return Expanded(child: Center(child: TaskIsEmpty()));
+                  }
+                }
+                if (state is FailureLoadData) {
+                  return Center(child: Text(state.errorMessage));
+                }
+                return Container();
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

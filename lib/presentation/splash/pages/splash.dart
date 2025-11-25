@@ -20,7 +20,6 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: BlocListener<SplashCubit, SplashState>(
         listener: (context, state) async {
           if (state is Authenticated) {

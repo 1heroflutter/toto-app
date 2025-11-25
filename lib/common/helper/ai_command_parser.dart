@@ -6,7 +6,6 @@ import 'package:mytodoapp/domain/assistant/entities/assistant_action.dart';
 class AiCommandParser {
   AiAction? parse(String response) {
     try {
-      // Nếu AI trả JSON bọc trong ```json ... ``` thì loại bỏ
       final cleaned = response
           .replaceAll('```json', '')
           .replaceAll('```', '')
@@ -20,7 +19,7 @@ class AiCommandParser {
         );
       }
     } catch (e) {
-      debugPrint("⚠️ Parser failed: $e");
+      debugPrint("Parser failed: $e");
     }
     return null;
   }

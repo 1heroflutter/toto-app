@@ -32,7 +32,7 @@ void setUpServiceLocator() {
   //service
   sl.registerSingleton<AuthRemoteData>(AuthRemoteDataImpl());
   sl.registerSingleton<AuthLocalData>(AuthLocalDataImpl());
-  sl.registerSingleton<TaskService>(TaskSeviceImpl());
+  sl.registerSingleton<TaskService>(TaskServiceImpl());
   sl.registerSingleton<AssistantRemoteDataSource>(AssistantRemoteDataSourceImpl(http.Client()));
   //repo
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());

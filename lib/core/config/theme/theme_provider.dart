@@ -7,13 +7,6 @@ class ThemeNotifier extends Notifier<ThemeMode> {
     return ThemeMode.system;
   }
 
-  Future<void> loadTheme() async {
-    final prefs = await SharedPreferences.getInstance();
-    final themeIndex = prefs.getInt("themeMode");
-    if (themeIndex != null) {
-      state = ThemeMode.values[themeIndex];
-    }
-  }
 
   void toggleTheme() {
     final newMode =

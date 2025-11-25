@@ -20,9 +20,10 @@ abstract class TaskService {
   Future<Either> isDone(String id, bool isDone);
 }
 
-class TaskSeviceImpl extends TaskService {
+class TaskServiceImpl extends TaskService {
   final FirebaseFirestore firebaseStorage = FirebaseFirestore.instance;
 
+  @override
   Future<Either> addNewTask(TaskEntity task, String uid) async {
     try {
       final taskModel = TaskModel(
@@ -58,7 +59,7 @@ class TaskSeviceImpl extends TaskService {
             scheduledDate: scheduled,
           );
         } else {
-          print("⏰ Task '${task.title}' có thời gian trong quá khứ, bỏ qua notification.");
+          print("Task '${task.title}' có thời gian trong quá khứ, bỏ qua notification.");
         }
       }
       return Right("Tạo mới thành công!");
@@ -77,6 +78,7 @@ class TaskSeviceImpl extends TaskService {
     }
   }
 
+  @override
   Future<Either> updateTask(TaskEntity task, String uid) async {
     try {
       final taskModel = TaskModel(
@@ -112,7 +114,7 @@ class TaskSeviceImpl extends TaskService {
             scheduledDate: scheduled,
           );
         } else {
-          print("⏰ Task '${task.title}' có thời gian trong quá khứ, bỏ qua notification.");
+          print(" Task '${task.title}' có thời gian trong quá khứ, bỏ qua notification.");
         }
       }
       return Right("Cập nhập thành công!");

@@ -45,7 +45,7 @@ class _IndexPageState extends State<IndexPage> {
         onPressed: () {
           showModalBottomSheet(
             context: context,
-            isScrollControlled: true, // cho phép sheet mở full height
+            isScrollControlled: true,
             backgroundColor: theme.colorScheme.background,
             builder: (context) {
               return Padding(

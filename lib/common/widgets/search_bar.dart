@@ -16,11 +16,14 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
   void initState() {
     super.initState();
     content = TextEditingController(text: "");
+    content.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
   void dispose() {
-    content.clear();
+    content.dispose();
     super.dispose();
   }
 
@@ -37,7 +40,19 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
         onChanged: (value) {
           context.read<TaskCubit>().searchTasks(value);
         },
-        leading: const Icon(Icons.search),
+        leading:
+            content.text.isEmpty
+                ? IconButton(icon: Icon(Icons.search), onPressed: () {})
+                : IconButton(
+                  onPressed: () {
+                    setState(() {
+                      content.clear();
+                    });
+                    context.read<TaskCubit>().getTasks();
+                  },
+                  icon: Icon(Icons.close),
+                ),
+
         hintText: "Search for your task...",
         backgroundColor: WidgetStatePropertyAll(theme.colorScheme.background),
         shape: WidgetStatePropertyAll(

@@ -10,9 +10,9 @@ class TaskEntity {
   final CategoryEntity? category;
   final int? priority;
 
-  TaskEntity({
+  const TaskEntity({
     this.id,
-     this.uid,
+    this.uid,
     this.isDone,
     this.title,
     required this.content,
@@ -20,6 +20,28 @@ class TaskEntity {
     this.category,
     this.priority,
   });
+
+  TaskEntity copyWith({
+    String? id,
+    String? uid,
+    bool? isDone,
+    String? title,
+    String? content,
+    DateTime? date,
+    CategoryEntity? category,
+    int? priority,
+  }) {
+    return TaskEntity(
+      id: id ?? this.id,
+      uid: uid ?? this.uid,
+      isDone: isDone ?? this.isDone,
+      title: title ?? this.title,
+      content: content ?? this.content,
+      date: date ?? this.date,
+      category: category ?? this.category,
+      priority: priority ?? this.priority,
+    );
+  }
 }
 
 class CategoryEntity {
@@ -27,5 +49,22 @@ class CategoryEntity {
   final IconData icon;
   final int color;
 
-  CategoryEntity({required this.name, required this.icon, required this.color});
+  const CategoryEntity({
+    required this.name,
+    required this.icon,
+    required this.color
+  });
+
+  // Hàm copyWith
+  CategoryEntity copyWith({
+    String? name,
+    IconData? icon,
+    int? color,
+  }) {
+    return CategoryEntity(
+      name: name ?? this.name,
+      icon: icon ?? this.icon,
+      color: color ?? this.color,
+    );
+  }
 }
