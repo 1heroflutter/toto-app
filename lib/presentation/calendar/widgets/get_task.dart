@@ -9,6 +9,7 @@ import '../../../core/config/assets/app_images.dart';
 import '../../../domain/task/usecase/get_today_task.dart';
 import '../../../service_locator.dart';
 import '../../home/bloc/task_cubit.dart';
+import '../../home/widgets/task_shimmer.dart';
 
 class GetTask extends StatefulWidget {
   final DateTime date;
@@ -56,7 +57,7 @@ class _GetTaskState extends State<GetTask> {
       child: BlocBuilder<GenericDataCubit, GenericDataState>(
         builder: (context, state) {
           if (state is DataLoading) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: TaskShimmer(itemCount: 3,));
           }
           if (state is DataLoaded) {
             if (state.data != null && state.data.isNotEmpty) {

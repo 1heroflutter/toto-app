@@ -258,42 +258,42 @@ class _EditPageState extends State<EditPage> {
                   spacing,
                   TaskComponent(
                     title: 'Delete Task',
-                    icon: IconButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return DeleteDialog(
-                              onTap: () async {
-                                final response = await sl<DeleteTaskUseCase>()
-                                    .call(params: task.id);
-                                response.fold(
-                                  (e) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          e,
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        behavior: SnackBarBehavior.floating,
-                                        backgroundColor: Colors.green,
-                                      ),
-                                    );
-                                  },
-                                  (r) {
-                                    AppNavigator.pop(context);
-                                    AppNavigator.pop(context);
-                                  },
-                                );
-                              },
-                              task: task,
-                            );
-                          },
-                        );
-                      },
-                      icon: const Icon(Icons.delete_forever_outlined),
+                    icon: const Icon(
+                      Icons.delete_forever_outlined,
                       color: Colors.red,
                     ),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return DeleteDialog(
+                            onTap: () async {
+                              final response = await sl<DeleteTaskUseCase>()
+                                  .call(params: task.id);
+                              response.fold(
+                                    (e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        e,
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      behavior: SnackBarBehavior.floating,
+                                      backgroundColor: Colors.green,
+                                    ),
+                                  );
+                                },
+                                    (r) {
+                                  AppNavigator.pop(context);
+                                  AppNavigator.pop(context);
+                                },
+                              );
+                            },
+                            task: task,
+                          );
+                        },
+                      );
+                    },
                   ),
                   const Spacer(),
                   // Button
@@ -326,7 +326,7 @@ class _EditPageState extends State<EditPage> {
                             Navigator.pop(context);
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text("Cập nhật thành công"),
+                                content: Text("Update successful"),
                                 backgroundColor: Colors.green,
                               ),
                             );

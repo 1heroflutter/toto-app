@@ -4,6 +4,7 @@ import 'package:mytodoapp/domain/task/entities/task_entity.dart';
 
 import '../../../common/bloc/generic_data_state.dart';
 import '../../home/bloc/task_cubit.dart';
+import '../../home/widgets/task_shimmer.dart';
 
 class TaskStatus extends StatelessWidget {
   const TaskStatus({super.key});
@@ -14,7 +15,7 @@ class TaskStatus extends StatelessWidget {
     return BlocBuilder<TaskCubit, GenericDataState>(
       builder: (context, state) {
         if (state is DataLoading) {
-          return Center(child: CircularProgressIndicator());
+          return Center(child: TaskShimmer());
         }
         if (state is DataLoaded) {
             List<TaskEntity> tasks = state.data;

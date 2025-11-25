@@ -188,6 +188,7 @@ class ProfilePage extends ConsumerWidget {
                         ),
                         const Spacer(),
                         Switch(
+
                           activeColor: theme.primaryColor,
                           value: themeMode == ThemeMode.dark,
                           onChanged: (value) {

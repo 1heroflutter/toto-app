@@ -20,7 +20,7 @@ class _IndexPageState extends State<IndexPage> {
   Widget _getPage(int index) {
     switch (index) {
       case 0:
-        return const HomePage();
+        return  HomePage();
       case 1:
         return const CalendarPage();
       case 2:
@@ -28,7 +28,7 @@ class _IndexPageState extends State<IndexPage> {
       case 3:
         return ProfilePage();
       default:
-        return const HomePage();
+        return  HomePage();
     }
   }
 

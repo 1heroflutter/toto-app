@@ -13,15 +13,11 @@ import 'package:mytodoapp/presentation/home/bloc/task_cubit.dart';
 
 import '../../../core/config/assets/app_images.dart';
 import '../../../service_locator.dart';
+import '../widgets/task_shimmer.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomePage extends StatelessWidget {
+   HomePage({super.key});
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   late List<TaskEntity> listTask;
 
   @override
@@ -54,7 +50,7 @@ class _HomePageState extends State<HomePage> {
             BlocBuilder<TaskCubit, GenericDataState>(
               builder: (context, state) {
                 if (state is DataLoading) {
-                  return Center(child: CircularProgressIndicator());
+                  return Center(child: TaskShimmer());
                 }
                 if (state is DataLoaded) {
                   if (state.data != null && state.data.isNotEmpty) {

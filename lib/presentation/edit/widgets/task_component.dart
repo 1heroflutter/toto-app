@@ -21,27 +21,30 @@ class TaskComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        children: [
-          icon,
-          const SizedBox(width: 8),
-          Text(title, style: TextStyle(color: theme.colorScheme.onPrimary, fontSize: 16)),
-          const Spacer(),
-          if (content != null)
-            GestureDetector(
-              onTap: onTap,
-              child: Container(
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+        child: Row(
+          children: [
+            icon,
+            const SizedBox(width: 8),
+            Text(title, style: TextStyle(color: theme.colorScheme.onPrimary, fontSize: 16)),
+            const Spacer(),
+            if (content != null)
+              Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
-                  color: category!=null?Color(category!.color):theme.colorScheme.primaryContainer,
+                  color: category != null
+                      ? Color(category!.color)
+                      : theme.colorScheme.primaryContainer,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: content,
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }
