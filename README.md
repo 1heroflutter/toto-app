@@ -7,7 +7,6 @@ A modern, intuitive, and feature-rich Task Management application built with **F
 ## 📸 Screenshots
 
 | Home Screen | Scheduled task | Ai assistant| Profile | Task Detail | Edit Task |
-|:---:|:---:|:---:|
 | ![Home](assets/screenshots/home.jpg) | ![Detail](assets/screenshots/schedule.jpg) | ![Detail](assets/screenshots/assistant.jpg) | ![Detail](assets/screenshots/profile.jpg) | ![Detail](assets/screenshots/detail.jpg)  | ![Edit](assets/screenshots/edit.png) | 
 
 ## ✨ Features
