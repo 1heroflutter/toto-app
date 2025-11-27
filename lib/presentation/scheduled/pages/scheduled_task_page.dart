@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_calendar/flutter_advanced_calendar.dart';
-import 'package:mytodoapp/presentation/calendar/widgets/get_task.dart';
 
 import '../../../common/helper/app_navigator.dart';
 import '../../../common/widgets/appbar/basic_appbar.dart';
 import '../../../common/widgets/task.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class CalendarPage extends StatefulWidget {
-  const CalendarPage({super.key});
+import '../widgets/get_task.dart';
+
+class ScheduledTaskPage extends StatefulWidget {
+  const ScheduledTaskPage({super.key});
 
   @override
-  State<CalendarPage> createState() => _CalendarPageState();
+  State<ScheduledTaskPage> createState() => _ScheduledTaskPageState();
 }
 
-class _CalendarPageState extends State<CalendarPage> {
+class _ScheduledTaskPageState extends State<ScheduledTaskPage> {
   AdvancedCalendarController selectedDay = AdvancedCalendarController(
     DateTime.now(),
   );

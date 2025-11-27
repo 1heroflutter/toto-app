@@ -2,6 +2,8 @@ import 'package:dartz/dartz.dart';
 import 'package:dartz/dartz_streaming.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as storage;
 import 'package:mytodoapp/data/auth/models/user.dart';
 import 'package:mytodoapp/data/auth/sources/auth_local_data.dart';
 import 'package:mytodoapp/data/auth/sources/auth_remote_data.dart';
@@ -11,6 +13,9 @@ import 'package:mytodoapp/domain/auth/repositories/auth_repository.dart';
 import '../../../service_locator.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
+  final FlutterSecureStorage storage = FlutterSecureStorage();
+  final String _kIsFirstTime = "is_first_time";
+  final String _kUser = "user";
   @override
   Future<Either> signIn(UserEntity params) async {
     final userModel = UserModel(
@@ -86,5 +91,16 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<UserEntity?> loadUser() {
     return sl<AuthLocalData>().loadUser();
+  }
+
+  @override
+  Future<bool> isFirstTime() async {
+    String? value = await storage.read(key: _kIsFirstTime);
+    return value == null;
+  }
+
+  @override
+  Future<void> setFirstTimeFinished() async {
+    await storage.write(key: _kIsFirstTime, value: "false");
   }
 }

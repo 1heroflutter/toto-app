@@ -93,7 +93,6 @@ class AssistantBloc extends Bloc<AssistantEvent, AssistantState> {
         final String? rawId = action.arguments['id'];
         print("DEBUG: AI trả về ID: '$rawId'");
 
-        // Log ra danh sách ID hiện có để so sánh
         print("DEBUG: Danh sách ID thật: ${currentTasks.map((e) => e.id).toList()}");
 
         if (rawId == null || rawId.isEmpty) {

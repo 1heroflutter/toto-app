@@ -130,7 +130,7 @@ class SettingPages extends ConsumerWidget {
       context: context,
       builder: (_) {
         return AlertDialog(
-          title: const Text("Chọn màu ứng dụng"),
+          title: const Text("Change app color"),
           content: SingleChildScrollView(
             child: ColorPicker(
               pickerColor: currentColor,

@@ -3,8 +3,7 @@ import 'package:mytodoapp/common/widgets/bottomSheet/task_add_bottom_sheet.dart'
 import 'package:mytodoapp/common/widgets/dialog/add.dart';
 import 'package:mytodoapp/presentation/assistant/pages/assistant_page.dart';
 import 'package:mytodoapp/presentation/edit/pages/edit_page.dart';
-import '../../calendar/pages/calendar_page.dart';
-import '../../focus/pages/focus_page.dart';
+import 'package:mytodoapp/presentation/scheduled/pages/scheduled_task_page.dart';
 import '../../home/pages/home_page.dart';
 import '../../profile/pages/profile_page.dart';
 
@@ -22,7 +21,7 @@ class _IndexPageState extends State<IndexPage> {
       case 0:
         return  HomePage();
       case 1:
-        return const CalendarPage();
+        return const ScheduledTaskPage();
       case 2:
         return const AssistantPage();
       case 3:

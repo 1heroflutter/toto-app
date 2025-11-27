@@ -23,7 +23,7 @@ class AuthRemoteDataImpl extends AuthRemoteData {
   @override
   Future<Either> signIn(UserModel params) async {
     if (params.email.isEmpty || params.password==null) {
-      return Left("Email hoặc mật khẩu không được để trống!");
+      return Left("Email or password cannot be blank!");
     }
     try {
       final credential = await firebaseAuth.signInWithEmailAndPassword(
@@ -39,14 +39,14 @@ class AuthRemoteDataImpl extends AuthRemoteData {
     } on FirebaseAuthException catch (e) {
       return Left(e.message ?? e.code);
     } catch (e) {
-      return Left("Lỗi không xác định: $e");
+      return Left("Unknown error: $e");
     }
   }
 
   @override
   Future<Either> signUp(UserModel params) async {
     if (params.email.isEmpty || params.password == null) {
-      return Left("Email hoặc mật khẩu không được để trống!");
+      return Left("Email or password cannot be blank!");
     }
     try {
       final credential = await firebaseAuth.createUserWithEmailAndPassword(
@@ -62,7 +62,7 @@ class AuthRemoteDataImpl extends AuthRemoteData {
     } on FirebaseAuthException catch (e) {
       return Left(e.message ?? e.code);
     } catch (e) {
-      return Left("Lỗi không xác định: $e");
+      return Left("Unknown error: $e");
     }
   }
 
@@ -100,7 +100,8 @@ class AuthRemoteDataImpl extends AuthRemoteData {
   Future<Either> signOut() async {
     try {
       await firebaseAuth.signOut();
-      return Right("Đăng xuất thành công");
+
+      return Right("Log out successfully");
     } catch (e) {
       return Left("Lỗi : $e");
     }
@@ -110,7 +111,7 @@ class AuthRemoteDataImpl extends AuthRemoteData {
   Future<String> forgotPassword(String email) async {
     try {
       await firebaseAuth.sendPasswordResetEmail(email: email);
-      return "Email đã được xác nhận, kiểm tra tin nhắn được gửi đến $email";
+      return "Email has been confirmed, check the message sent to you $email";
     } on FirebaseException catch (e) {
       return "Lỗi :${e.message}";
     }

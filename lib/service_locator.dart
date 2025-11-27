@@ -25,6 +25,7 @@ import 'package:mytodoapp/domain/task/usecase/update_task.dart';
 import 'package:mytodoapp/presentation/assistant/bloc/assistant_bloc.dart';
 
 import 'domain/assistant/usecases/send_message_usecase.dart';
+import 'domain/auth/usecase/get_current_user.dart';
 
 final sl = GetIt.instance;
 
@@ -42,13 +43,14 @@ void setUpServiceLocator() {
   sl.registerSingleton<SignInUseCase>(SignInUseCase());
   sl.registerSingleton<SignOutUseCase>(SignOutUseCase());
   sl.registerSingleton<SignUpUseCase>(SignUpUseCase());
+  sl.registerSingleton<GetCurrentUserUseCase>(GetCurrentUserUseCase());
   sl.registerSingleton<SignInWithGoogleUseCase>(SignInWithGoogleUseCase());
   sl.registerSingleton<AddTaskUseCase>(AddTaskUseCase());
   sl.registerSingleton<GetAllTaskUseCase>(GetAllTaskUseCase());
   sl.registerSingleton<GetTaskByDateTaskUseCase>(GetTaskByDateTaskUseCase());
   sl.registerSingleton<DeleteTaskUseCase>(DeleteTaskUseCase());
   sl.registerSingleton<UpdateTaskUseCase>(UpdateTaskUseCase());
-  sl.registerSingleton<IsLogginUseCase>(IsLogginUseCase());
+  sl.registerSingleton<IsLoginUseCase>(IsLoginUseCase());
   sl.registerSingleton<IsDoneTaskUseCase>(IsDoneTaskUseCase());
 
   sl.registerSingleton<SendMessageUseCase>(SendMessageUseCase());

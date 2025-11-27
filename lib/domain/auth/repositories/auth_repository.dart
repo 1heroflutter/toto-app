@@ -8,6 +8,8 @@ abstract class AuthRepository {
   Future<Either> signUp(UserEntity params);
   Future<Either> signInWithGoogle(AuthCredential credential);
   Future<Either> isLogin();
+  Future<bool> isFirstTime();
+  Future<void> setFirstTimeFinished();
   Future<String> forgotPassword(String email);
   Future<UserEntity?> loadUser();
   Future<Either> signOut();

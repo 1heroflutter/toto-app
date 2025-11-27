@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mytodoapp/core/config/assets/app_images.dart';
 import 'package:mytodoapp/presentation/auth/pages/onboarding.dart';
+import 'package:mytodoapp/presentation/auth/pages/signin.dart';
 import 'package:mytodoapp/presentation/index/pages/index_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,8 +15,8 @@ import '../../../service_locator.dart';
 import '../bloc/splash_cubit.dart';
 import '../bloc/splash_state.dart';
 
-class SplashPage extends StatelessWidget {
-  const SplashPage({super.key});
+class IsFirstTimePage extends StatelessWidget {
+  const IsFirstTimePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,36 +27,15 @@ class SplashPage extends StatelessWidget {
             AppNavigator.pushAndRemove(context, IndexPage());
 
           } else {
-            AppNavigator.pushAndRemove(context, OnboardingPage());
-
+            AppNavigator.pushAndRemove(context, SigninPage());
           }
         },
-        child: Stack(
-          children: [
-            Center(
-              child: SizedBox(
-                height: 90,
-                width: 90,
-                child: Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(AppImages.icon),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.center,
-                  end: Alignment.bottomCenter,
-                  colors: [Color(0xff1A1B20).withOpacity(0), Color(0xff1A1B20)],
-                ),
-              ),
-            ),
-          ],
+        child: Center(
+          child: SizedBox(
+            height: 90,
+            width: 90,
+            child: CircularProgressIndicator()
+          ),
         ),
       ),
     );

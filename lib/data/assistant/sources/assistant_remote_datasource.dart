@@ -58,11 +58,12 @@ class AssistantRemoteDataSourceImpl extends AssistantRemoteDataSource {
           $taskContext
           ----------------
           Khi người dùng yêu cầu thêm/sửa/xóa hoặc hoàn thành task,
-          hãy trả vè JSON có dạng :
+          hãy trả vè JSON  có dạng(lưu ý không trả về kiểu dữ liệu, code, hoặc suy nghĩ sử lý về phía client :
           {
             "action": "add_task" | "update_task" | "delete_task" | "is_done",
             "parameters":{ ... }
           }
+          
           Quy tắc quan trọng:
           1. Nếu người dùng muốn XÓA hoặc SỬA, hãy tìm ID tương ứng trong danh sách trên và trả về trong field "id".
           2. Cấu trúc TaskModel... (giữ nguyên như cũ)

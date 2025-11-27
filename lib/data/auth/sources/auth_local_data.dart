@@ -9,12 +9,24 @@ abstract class AuthLocalData {
   Future<void> saveUser(UserModel user);
 
   Future<UserEntity?> loadUser();
-
+  Future<bool> isFirstTime();
+  Future<void> setFirstTimeFinished();
   Future<void> clear();
 }
 
 class AuthLocalDataImpl extends AuthLocalData {
   final FlutterSecureStorage storage = FlutterSecureStorage();
+  final String keyFirstTime = "is_first_time";
+
+  @override
+  Future<bool> isFirstTime() async {
+    String? value = await storage.read(key: keyFirstTime);
+    return value == null;
+  }
+  @override
+  Future<void> setFirstTimeFinished() async {
+    await storage.write(key: keyFirstTime, value: "false");
+  }
   @override
   Future<void> clear() async {
     await storage.delete(key: "user");

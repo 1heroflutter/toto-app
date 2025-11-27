@@ -8,8 +8,8 @@ import 'package:mytodoapp/core/config/theme/app_theme.dart';
 import 'package:mytodoapp/core/config/theme/theme_provider.dart';
 import 'package:mytodoapp/data/notify/sources/local_notification_service.dart';
 import 'package:mytodoapp/presentation/home/bloc/task_cubit.dart';
-import 'package:mytodoapp/presentation/splash/bloc/splash_cubit.dart';
-import 'package:mytodoapp/presentation/splash/pages/splash.dart';
+import 'package:mytodoapp/presentation/is_first_time_user/bloc/splash_cubit.dart';
+import 'package:mytodoapp/presentation/is_first_time_user/pages/splash.dart';
 import 'package:mytodoapp/service_locator.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -47,7 +47,7 @@ class MyApp extends ConsumerWidget {
         theme: AppTheme.lightTheme(primaryColor),
         darkTheme: AppTheme.darkTheme(primaryColor),
         themeMode: themeMode,
-        home: SplashPage(),
+        home: IsFirstTimePage(),
       ),
     );
   }
