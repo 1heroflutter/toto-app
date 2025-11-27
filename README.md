@@ -6,9 +6,9 @@ A modern, intuitive, and feature-rich Task Management application built with **F
 
 ## 📸 Screenshots
 
-| Home Screen | Scheduled Task | AI Assistant | Profile | Task Detail | Edit Task |
-| :---: | :---: | :---: | :---: | :---: | :---: |
-| ![Home](assets/screenshots/home.jpg) | ![Scheduled Task](assets/screenshots/schedule.jpg) | ![AI Assistant](assets/screenshots/assistant.jpg) | ![Profile](assets/screenshots/profile.jpg) | ![Task Detail](assets/screenshots/detail.jpg) | ![Edit Task](assets/screenshots/edit.png) |
+| Home Screen | Scheduled Task | AI Assistant | Profile |                  Task Detail                 
+| :---: | :---: | :---: | :---: |:---------------------------------------------:|
+| ![Home](assets/screenshots/home.jpg) | ![Scheduled Task](assets/screenshots/schedule.jpg) | ![AI Assistant](assets/screenshots/assistant.jpg) | ![Profile](assets/screenshots/profile.jpg) | ![Task Detail](assets/screenshots/detail.jpg) |
 ## ✨ Features
 
 * **Task Management**: Create, Read, Update, and Delete (CRUD) tasks efficiently.
