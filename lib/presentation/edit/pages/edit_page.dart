@@ -15,6 +15,7 @@ import 'package:mytodoapp/presentation/edit/widgets/expandable_text.dart';
 import 'package:mytodoapp/presentation/edit/widgets/task_component.dart';
 import 'package:mytodoapp/presentation/home/pages/home_page.dart';
 
+import '../../../domain/task/usecase/isDone_task.dart';
 import '../../../service_locator.dart';
 
 class EditPage extends StatefulWidget {
@@ -34,7 +35,7 @@ class _EditPageState extends State<EditPage> {
       AdvancedCalendarController(DateTime.now());
   CategoryEntity? category;
   DateTime? date;
-
+  late bool isDone;
   @override
   void initState() {
     super.initState();
@@ -46,6 +47,7 @@ class _EditPageState extends State<EditPage> {
     category = widget.task.category;
     date = widget.task.date;
     calendarController = AdvancedCalendarController(date ?? DateTime.now());
+    isDone = widget.task.isDone??false;
     print("[Check date]:${widget.task.date}");
   }
 
@@ -84,12 +86,19 @@ class _EditPageState extends State<EditPage> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Radio(
-                value: false,
-                fillColor: WidgetStatePropertyAll(theme.colorScheme.onPrimary),
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                visualDensity: VisualDensity(horizontal: 0),
-              ),
+              Checkbox(value: isDone,
+                shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(100)),
+                onChanged: (value)async {
+                if(value!=null){
+                  setState(() {
+                    isDone = value;
+                  });
+                }
+               await sl<IsDoneTaskUseCase>().call(
+                  params: widget.task.id,
+                  isDone: isDone,
+                );
+              },),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -127,6 +136,7 @@ class _EditPageState extends State<EditPage> {
                               id: task.id,
                               content: description.text,
                               title: title.text,
+                              isDone: isDone,
                               date: task.date,
                               category: task.category,
                               priority: task.priority,
@@ -137,14 +147,14 @@ class _EditPageState extends State<EditPage> {
                           response.fold(
                             (e) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text("Lỗi: $e")),
+                                SnackBar(content: Text("Lỗi: $e"),behavior: SnackBarBehavior.floating,),
                               );
                             },
                             (r) {
                               Navigator.pop(context); // đóng dialog
                               setState(() {}); // refresh UI nếu cần
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(r.toString())),
+                                SnackBar(content: Text(r.toString()),behavior: SnackBarBehavior.floating,),
                               );
                             },
                           );
@@ -307,6 +317,7 @@ class _EditPageState extends State<EditPage> {
                             id: task.id,
                             content: description.text,
                             title: title.text,
+                            isDone: isDone,
                             date: date,
                             category: category,
                             priority: priority,
@@ -318,6 +329,7 @@ class _EditPageState extends State<EditPage> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text("Lỗi: $e"),
+                                behavior: SnackBarBehavior.floating,
                                 backgroundColor: Colors.red,
                               ),
                             );
@@ -327,6 +339,7 @@ class _EditPageState extends State<EditPage> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text("Update successful"),
+                                behavior: SnackBarBehavior.floating,
                                 backgroundColor: Colors.green,
                               ),
                             );

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
@@ -10,9 +9,9 @@ class BasicAppBar extends StatelessWidget {
 
   const BasicAppBar({
     super.key,
-    required this.icon,
-    required this.title,
-    required this.onLeadingTap,
+    this.icon,
+    this.title,
+    this.onLeadingTap,
     required this.suffer,
   });
 

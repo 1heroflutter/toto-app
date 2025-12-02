@@ -37,6 +37,7 @@ class _IndexPageState extends State<IndexPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       floatingActionButton: _currentIndex!=2?FloatingActionButton(
+
         backgroundColor: theme.primaryColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusGeometry.circular(100),

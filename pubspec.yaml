@@ -61,6 +61,7 @@ dependencies:
   equatable:
   shimmer: ^3.0.0
   flutter_native_splash: ^2.4.7
+  flutter_timezone:
 dev_dependencies:
   flutter_test:
     sdk: flutter

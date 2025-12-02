@@ -23,7 +23,7 @@ class BasicReactBtn extends StatelessWidget {
         onFailure: (String error) {
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(SnackBar(content: Text(error)));
+          ).showSnackBar(SnackBar(content: Text(error),behavior: SnackBarBehavior.floating,));
         },
       ),
     );

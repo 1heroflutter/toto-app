@@ -45,11 +45,7 @@ class _SigninPageState extends State<SigninPage> {
           MediaQuery.of(context).size.height * 0.05,
         ),
         child: BasicAppBar(
-          icon: Icons.navigate_before,
           title: null,
-          onLeadingTap: () {
-            AppNavigator.pop(context);
-          },
           suffer: null,
         ),
       ),
@@ -87,14 +83,14 @@ class _SigninPageState extends State<SigninPage> {
                       _passwordError = null;
                       _usernameError = null;
                     });
-                    if (email.text.length == 0) {
+                    if (email.text.isEmpty) {
                       setState(() {
-                        _usernameError = "Email không được để trống";
+                        _usernameError = "Email cannot be blank";
                       });
                     }
                     if (password.text.length < 6) {
                       setState(() {
-                        _passwordError = "Mật khẩu phải từ 6 ký tự trở lên";
+                        _passwordError = "Password must be 6 characters or more";
                       });
                     }
                     return await sl<SignInUseCase>().call(
@@ -108,10 +104,11 @@ class _SigninPageState extends State<SigninPage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          "Đăng nhập thành công",
+                          " Login success",
                           style: TextStyle(color: Colors.white),
                         ),
                         backgroundColor: Colors.green,
+                        behavior: SnackBarBehavior.floating,
                       ),
                     );
                     AppNavigator.pushAndRemove(context, IndexPage());
@@ -137,7 +134,6 @@ class _SigninPageState extends State<SigninPage> {
                     setState(() {
                       _idLoading = true;
                     });
-                    //Mở và chọn tài khoản gg
                     final GoogleSignInAccount? googleUser =
                         await GoogleSignIn().signIn();
                     if (googleUser == null) ;
@@ -158,10 +154,11 @@ class _SigninPageState extends State<SigninPage> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                              "Đăng nhập thành công",
+                              " Login success",
                               style: TextStyle(color: Colors.white),
                             ),
                             backgroundColor: Colors.green,
+                            behavior: SnackBarBehavior.floating,
                           ),
                         );
                         AppNavigator.pushAndRemove(context, IndexPage());

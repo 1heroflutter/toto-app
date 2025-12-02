@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mytodoapp/domain/auth/repositories/auth_repository.dart';
 import 'package:mytodoapp/presentation/auth/pages/signin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/config/assets/app_images.dart';
 import '../../../core/config/theme/app_colors.dart';
+import '../../../service_locator.dart';
 
 Future<void> setOnboardingCompleted() async {
   final prefs = await SharedPreferences.getInstance();
@@ -159,6 +161,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                 onPressed: () {
                                   if (currentPage == images.length - 1) {
                                     setOnboardingCompleted();
+                                    sl<AuthRepository>().setFirstTimeFinished();
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(

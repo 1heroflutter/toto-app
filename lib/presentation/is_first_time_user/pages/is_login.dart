@@ -12,20 +12,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../common/helper/app_navigator.dart';
 import '../../../service_locator.dart';
-import '../bloc/splash_cubit.dart';
-import '../bloc/splash_state.dart';
+import '../bloc/is_login_cubit.dart';
+import '../bloc/is_login_state.dart';
 
-class IsFirstTimePage extends StatelessWidget {
-  const IsFirstTimePage({super.key});
+class IsLoginPage extends StatelessWidget {
+  const IsLoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocListener<SplashCubit, SplashState>(
+      body: BlocListener<IsLoginCubit, IsLoginState>(
         listener: (context, state) async {
-          if (state is Authenticated) {
+          if(state is FirstTimeUser){
+            AppNavigator.pushAndRemove(context, OnboardingPage());
+          } else if (state is Authenticated) {
             AppNavigator.pushAndRemove(context, IndexPage());
-
           } else {
             AppNavigator.pushAndRemove(context, SigninPage());
           }

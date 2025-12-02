@@ -116,6 +116,7 @@ class _SignupPageState extends State<SignupPage> {
                           style: TextStyle(color: Colors.white),
                         ),
                         backgroundColor: Colors.green,
+                        behavior: SnackBarBehavior.floating,
                       ),
                     );
                     AppNavigator.push(context, SigninPage());
@@ -164,10 +165,11 @@ class _SignupPageState extends State<SignupPage> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                              "Đăng nhập thành công",
+                              " Login success",
                               style: TextStyle(color: Colors.white),
                             ),
                             backgroundColor: Colors.green,
+                            behavior: SnackBarBehavior.floating,
                           ),
                         );
                         AppNavigator.pushAndRemove(context, IndexPage());

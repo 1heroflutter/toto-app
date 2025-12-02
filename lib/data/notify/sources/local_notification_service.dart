@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -19,12 +19,16 @@ class LocalNotificationService {
     tz.initializeTimeZones();
 
     const AndroidInitializationSettings androidSettings =
-    AndroidInitializationSettings('@mipmap/ic_launcher');
+    AndroidInitializationSettings('@drawable/icon');
 
     const InitializationSettings initSettings = InitializationSettings(
       android: androidSettings,
     );
+    final timeZoneInfo = await FlutterTimezone.getLocalTimezone();
 
+    // Trích xuất tên múi giờ (String) từ thuộc tính 'identifier'
+    final String timeZoneName = timeZoneInfo.identifier;
+    tz.setLocalLocation(tz.getLocation(timeZoneName));
     await _notificationsPlugin.initialize(initSettings);
 
     if (Platform.isAndroid) {
@@ -32,11 +36,25 @@ class LocalNotificationService {
           .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>();
 
+      // 🔴 THÊM DÒNG NÀY: Yêu cầu quyền thông báo cơ bản
+      await androidPlugin?.requestNotificationsPermission();
+
+      // Tạo Notification Channel (Nếu bạn muốn đảm bảo Channel được tạo)
+      await androidPlugin?.createNotificationChannel(
+        const AndroidNotificationChannel(
+          'task_channel_id_v2',
+          'Task Notifications',
+          description: 'Channel for task reminders',
+          importance: Importance.max,
+        ),
+      );
       final canSchedule =
           await androidPlugin?.canScheduleExactNotifications() ?? false;
 
       if (!canSchedule) {
-        await openAppNotificationSettings();
+        await AndroidIntent(
+          action: 'android.settings.REQUEST_SCHEDULE_EXACT_ALARM',
+        ).launch();
       }
     }
   }

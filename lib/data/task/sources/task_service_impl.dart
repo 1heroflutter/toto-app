@@ -58,6 +58,7 @@ class TaskServiceImpl extends TaskService {
             body: task.content ?? "",
             scheduledDate: scheduled,
           );
+          print("Task '${task.title}' đặt thông báo thành công.");
         } else {
           print("Task '${task.title}' có thời gian trong quá khứ, bỏ qua notification.");
         }
@@ -94,6 +95,7 @@ class TaskServiceImpl extends TaskService {
                 )
                 : null,
         priority: task.priority,
+        isDone: task.isDone??false,
         uid: uid,
       );
 
@@ -106,18 +108,20 @@ class TaskServiceImpl extends TaskService {
       if (task.date != null) {
         final now = DateTime.now();
         final scheduled = task.date!;
+        int notificationId = DateTime.now().millisecondsSinceEpoch % 100000;
         if (scheduled.isAfter(now.add(const Duration(seconds: 5)))) {
           await LocalNotificationService.scheduleNotification(
-            id: task.id!.hashCode,
+            id: notificationId,
             title: task.title ?? "Task Reminder",
             body: task.content ?? "",
             scheduledDate: scheduled,
           );
+          print("Task '${task.title}' đặt thông báo thành công.");
         } else {
           print(" Task '${task.title}' có thời gian trong quá khứ, bỏ qua notification.");
         }
       }
-      return Right("Cập nhập thành công!");
+      return Right("Update successful!");
     } catch (e) {
       return Left(e);
     }
@@ -131,7 +135,7 @@ class TaskServiceImpl extends TaskService {
       });
       return Right("");
     } catch (e) {
-      return Left("Lỗi khi cập nhật trạng thái: $e");
+      return Left("Error while updating status: $e");
     }
   }
 
@@ -155,7 +159,6 @@ class TaskServiceImpl extends TaskService {
   Future<Either> getTaskByDate(DateTime date, bool isDone, String uid) async {
     final startOfDay = DateTime(date.year, date.month, date.day);
     final endOfDay = DateTime(date.year, date.month, date.day, 23, 59, 59);
-
     try {
       final returnData =
           await firebaseStorage

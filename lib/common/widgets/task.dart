@@ -61,6 +61,7 @@ class _TaskItemWidgetState extends State<TaskItemWidget> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(e, style: TextStyle(color: Colors.white)),
+                                  behavior: SnackBarBehavior.floating,
                                   backgroundColor: Colors.green,
                                 ),
                               );
@@ -101,14 +102,14 @@ class _TaskItemWidgetState extends State<TaskItemWidget> {
                     (e) {
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(e)),
+                      SnackBar(content: Text(e),behavior: SnackBarBehavior.floating,),
                     );
                   }
                 },
                     (r) {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(r)),
+                          SnackBar(content: Text(r),behavior: SnackBarBehavior.floating,),
                         );
                       }
                     },
@@ -142,8 +143,7 @@ class _TaskItemWidgetState extends State<TaskItemWidget> {
                   setState(() {
                    done= value;
                   });
-
-                  final response = await sl<IsDoneTaskUseCase>().call(
+                  await sl<IsDoneTaskUseCase>().call(
                     params: widget.task.id,
                     isDone: value,
                   );

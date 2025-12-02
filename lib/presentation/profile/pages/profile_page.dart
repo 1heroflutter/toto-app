@@ -204,7 +204,7 @@ class ProfilePage extends ConsumerWidget {
                       AppNavigator.pushAndRemove(context, SigninPage());
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(e.toString())));
+                          SnackBar(content: Text(e.toString()),behavior: SnackBarBehavior.floating,));
                     }
                   }),
                 ],
